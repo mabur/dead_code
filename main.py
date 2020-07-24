@@ -48,7 +48,10 @@ def main():
     for filepath in walk_files(args.dirs):
         with open(filepath, "r") as file:
             try:
-                lines = [strip_line_comment(line) for line in file.readlines()]
+                lines = [
+                    strip_string(strip_line_comment(line))
+                    for line in file.readlines()
+                ]
                 for line_number, line in enumerate(lines):
                     matches = function_regex.findall(line)
                     for match in matches:
