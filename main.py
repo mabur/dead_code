@@ -103,7 +103,7 @@ def strip_multi_line_strings(lines: List[str]) -> List[str]:
             is_inside_string = True
             lines[index] = strip_multi_line_string_start(line)
         if ')"' in line:
-            is_inside_string = True
+            is_inside_string = False
             lines[index] = strip_multi_line_string_end(line)
         if is_inside_string:
             lines[index] = ""
