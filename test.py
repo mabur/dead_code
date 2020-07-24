@@ -11,8 +11,10 @@ from main import (
     strip_multi_line_string_end,
     strip_include,
     strip_define_macro,
+    strip_quotation,
 )
 
+# TODO: swap order of input to asserts
 
 class Test(TestCase):
     def test_string_regex1(self):
@@ -25,6 +27,24 @@ class Test(TestCase):
         self.assertEqual(
             strip_string('            "Go to http://cli.volumental.com to make one", kDeveloperCredentials.c_str());'),
             "            , kDeveloperCredentials.c_str());",
+        )
+
+    def test_quotation_regex1(self):
+        self.assertEqual(
+            strip_quotation(r'\"'),
+            '',
+        )
+
+    def test_quotation_regex2(self):
+        self.assertEqual(
+            strip_quotation(r'"Optional path to calibration, eg: \"./rig_calibration.json\""'),
+            r'"Optional path to calibration, eg: ./rig_calibration.json"',
+        )
+
+    def test_quotation_and_string_regex(self):
+        self.assertEqual(
+            strip_string(strip_quotation(r'"\""')),
+            '',
         )
 
     def test_strip_single_line_comment1(self):

@@ -7,6 +7,7 @@ from typing import List
 
 file_extensions = ["hpp", "cpp"]
 
+quotation_regex = re.compile(r'\\"')
 string_regex = re.compile(r'"[^"]*"')
 function_regex = re.compile(r"[a-zA-Z_]\w+")
 include_regex = re.compile(r"#include[\w\W]+")
@@ -36,6 +37,9 @@ def walk_files(dir_paths):
                 if file_name.split(".")[-1] in file_extensions:
                     yield os.path.join(root, file_name)
 
+
+def strip_quotation(line: str) -> str:
+    return quotation_regex.sub("", line)
 
 def strip_include(line: str) -> str:
     return include_regex.sub("", line)
@@ -106,7 +110,7 @@ def strip_multi_line_strings(lines: List[str]) -> List[str]:
     return lines
 
 def strip_line(line: str) -> str:
-    return strip_string(strip_line_comment(strip_define_macro(strip_include(line))))
+    return strip_string(strip_quotation(strip_line_comment(strip_define_macro(strip_include(line)))))
 
 def main():
     parser = argparse.ArgumentParser()
