@@ -85,7 +85,7 @@ def strip_multi_line_commenst(lines: List[str]) -> List[str]:
             is_inside_comment = True
             lines[index] = strip_comment_start(line)
         if "*/" in line:
-            is_inside_comment = True
+            is_inside_comment = False
             lines[index] = strip_comment_end(line)
         if is_inside_comment:
             lines[index] = ""
