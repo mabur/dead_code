@@ -10,6 +10,7 @@ import re
 
 file_extensions = ["hpp", "cpp"]
 r = r"[a-zA-Z0-9]+\("
+string_regex = re.compile(r'"[^"]*"')
 
 
 class SymbolLocation:
@@ -32,6 +33,10 @@ def strip_line_comment(line: str) -> str:
     if comment_index == -1:
         return line
     return line[:comment_index]
+
+
+def strip_string(line: str) -> str:
+    return string_regex.sub("", line)
 
 
 def main():
