@@ -9,9 +9,13 @@ import re
 
 
 file_extensions = ["hpp", "cpp"]
+
 string_regex = re.compile(r'"[^"]*"')
 function_regex = re.compile(r"\w+\(")
 line_comment_regex = re.compile(r"//.*")
+comment_regex = re.compile(r"/\*[^\*/]*\*/")
+comment_regex_start = re.compile(r"/\*[^\*/]*")
+comment_regex_end = re.compile(r"[^\*/]*\*/")
 
 class SymbolLocation:
     def __init__(self):
@@ -32,6 +36,13 @@ def strip_line_comment(line: str) -> str:
     return line_comment_regex.sub("", line)
 
 
+def strip_comment(line: str) -> str:
+    line = comment_regex.sub("", line)
+    line = comment_regex_start.sub("", line)
+    line = comment_regex_end.sub("", line)
+    return line
+
+
 def strip_string(line: str) -> str:
     return string_regex.sub("", line)
 
@@ -46,7 +57,7 @@ def main():
         with open(filepath, "r") as file:
             try:
                 lines = [
-                    strip_string(strip_line_comment(line))
+                    strip_comment(strip_string(strip_line_comment(line)))
                     for line in file.readlines()
                 ]
                 for line_number, line in enumerate(lines):
