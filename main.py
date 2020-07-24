@@ -82,30 +82,30 @@ def strip_string(line: str) -> str:
 
 
 def strip_multi_line_commenst(lines: List[str]) -> List[str]:
-    is_inside_comment = False
+    is_inside = False
     lines = [strip_comment(line)  for line in lines]
     for index, line in enumerate(lines):
         if "/*" in line:
-            is_inside_comment = True
+            is_inside = True
             lines[index] = strip_comment_start(line)
         if "*/" in line:
-            is_inside_comment = False
+            is_inside = False
             lines[index] = strip_comment_end(line)
-        if is_inside_comment:
+        if is_inside:
             lines[index] = ""
     return lines
 
 def strip_multi_line_strings(lines: List[str]) -> List[str]:
-    is_inside_string = False
+    is_inside = False
     lines = [strip_multi_line_string(line)  for line in lines]
     for index, line in enumerate(lines):
         if 'R"(' in line:
-            is_inside_string = True
+            is_inside = True
             lines[index] = strip_multi_line_string_start(line)
         if ')"' in line:
-            is_inside_string = False
+            is_inside = False
             lines[index] = strip_multi_line_string_end(line)
-        if is_inside_string:
+        if is_inside:
             lines[index] = ""
     return lines
 
