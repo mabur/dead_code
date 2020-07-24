@@ -8,7 +8,7 @@ from typing import List
 file_extensions = ["hpp", "cpp"]
 
 string_regex = re.compile(r'"[^"]*"')
-function_regex = re.compile(r"[a-zA-Z_]\w+\(")
+function_regex = re.compile(r"[a-zA-Z_]\w+")
 include_regex = re.compile(r"#include[\w\W]+")
 define_macro_regex = re.compile(r"DEFINE_[\w\W]+")
 single_line_comment_regex = re.compile(r"//.*")
@@ -122,8 +122,7 @@ def main():
                 lines = strip_multi_line_strings(lines)
                 for line_number, line in enumerate(lines):
                     matches = function_regex.findall(line)
-                    for match in matches:
-                        symbol = match[:-1]
+                    for symbol in matches:
                         symbol_table[symbol].occurances += 1
                         symbol_table[symbol].line_number = line_number
                         symbol_table[symbol].file_path = filepath
