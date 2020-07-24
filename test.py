@@ -15,10 +15,16 @@ from main import (
 
 
 class Test(TestCase):
-    def test_string_regex(self):
+    def test_string_regex1(self):
         self.assertEqual(
             strip_string('print("hello");'),
             "print();",
+        )
+
+    def test_string_regex2(self):
+        self.assertEqual(
+            strip_string('            "Go to http://cli.volumental.com to make one", kDeveloperCredentials.c_str());'),
+            "            , kDeveloperCredentials.c_str());",
         )
 
     def test_strip_single_line_comment(self):
