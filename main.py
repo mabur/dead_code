@@ -10,9 +10,15 @@ file_extensions = ["hpp", "cpp"]
 string_regex = re.compile(r'"[^"]*"')
 function_regex = re.compile(r"\w+\(")
 single_line_comment_regex = re.compile(r"//.*")
-multi_line_comment_regex = re.compile(r"/\*[^\*/]*\*/")
-multi_line_comment_regex_start = re.compile(r"/\*[^\*/]*")
-multi_line_comment_regex_end = re.compile(r"[^\*/]*\*/")
+
+multi_line_comment_regex = re.compile(r"/\*[^(\*/)]*\*/")
+multi_line_comment_regex_start = re.compile(r"/\*[^(\*/)]*")
+multi_line_comment_regex_end = re.compile(r"[^(\*/)]*\*/")
+
+multi_line_string_regex = re.compile(r'R"\([^(\)")]*\)"')
+multi_line_string_regex_start = re.compile(r'R"\([^(\)")]*')
+multi_line_string_regex_end = re.compile(r'[^(\)")]*\)"')
+
 
 class SymbolLocation:
     def __init__(self):
@@ -45,6 +51,18 @@ def strip_comment_end(line: str) -> str:
     return multi_line_comment_regex_end.sub("", line)
 
 
+def strip_multi_line_string(line: str) -> str:
+    return multi_line_string_regex.sub("", line)
+
+
+def strip_multi_line_string_start(line: str) -> str:
+    return multi_line_string_regex_start.sub("", line)
+
+
+def strip_multi_line_string_end(line: str) -> str:
+    return multi_line_string_regex_end.sub("", line)
+
+
 def strip_string(line: str) -> str:
     return string_regex.sub("", line)
 
@@ -63,6 +81,19 @@ def strip_multi_line_commenst(lines: List[str]) -> List[str]:
             lines[index] = ""
     return lines
 
+def strip_multi_line_strings(lines: List[str]) -> List[str]:
+    is_inside_string = False
+    lines = [strip_multi_line_string(line)  for line in lines]
+    for index, line in enumerate(lines):
+        if 'R"(' in line:
+            is_inside_string = True
+            lines[index] = strip_multi_line_string_start(line)
+        if ')"' in line:
+            is_inside_string = True
+            lines[index] = strip_multi_line_string_end(line)
+        if is_inside_string:
+            lines[index] = ""
+    return lines
 
 def main():
     parser = argparse.ArgumentParser()
@@ -78,6 +109,7 @@ def main():
                     for line in file.readlines()
                 ]
                 lines = strip_multi_line_commenst(lines)
+                lines = strip_multi_line_strings(lines)
                 for line_number, line in enumerate(lines):
                     matches = function_regex.findall(line)
                     for match in matches:

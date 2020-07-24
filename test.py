@@ -6,10 +6,19 @@ from main import (
     strip_comment,
     strip_comment_start,
     strip_comment_end,
+    strip_multi_line_string,
+    strip_multi_line_string_start,
+    strip_multi_line_string_end,
 )
 
 
 class Test(TestCase):
+    def test_string_regex(self):
+        self.assertEqual(
+            strip_string('print("hello");'),
+            "print();",
+        )
+
     def test_strip_single_line_comment(self):
         self.assertEqual(
             strip_line_comment("int x = 5; // variable"),
@@ -34,8 +43,20 @@ class Test(TestCase):
             " print();",
         )
 
-    def test_string_regex(self):
+    def test_strip_multi_line_string(self):
         self.assertEqual(
-            strip_string('print("hello");'),
-            "print();",
+            strip_multi_line_string('print(R"(hello)")'),
+            "print()"
+        )
+
+    def test_strip_multi_line_start(self):
+        self.assertEqual(
+            strip_multi_line_string_start('print(R"(hello'),
+            "print("
+        )
+
+    def test_strip_multi_line_end(self):
+        self.assertEqual(
+            strip_multi_line_string_end('hello)");'),
+            ");"
         )
