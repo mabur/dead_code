@@ -26,6 +26,14 @@ def walk_files(dir_paths):
                 if file_name.split(".")[-1] in file_extensions:
                     yield os.path.join(root, file_name)
 
+
+def strip_line_comment(line: str) -> str:
+    comment_index = line.find("//")
+    if comment_index == -1:
+        return line
+    return line[:comment_index]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dirs", nargs='+')
@@ -37,6 +45,7 @@ def main():
             try:
                 lines = file.readlines()
                 for line_number, line in enumerate(lines):
+                    line = strip_line_comment(line)
                     matches = function_regex.findall(line)
                     for match in matches:
                         symbol = match[:-1]
