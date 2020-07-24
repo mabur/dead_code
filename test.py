@@ -9,6 +9,7 @@ from main import (
     strip_multi_line_string,
     strip_multi_line_string_start,
     strip_multi_line_string_end,
+    strip_include,
 )
 
 
@@ -59,4 +60,10 @@ class Test(TestCase):
         self.assertEqual(
             strip_multi_line_string_end('hello)");'),
             ");"
+        )
+
+    def test_strip_include(self):
+        self.assertEqual(
+            strip_include('#include <iostream>'),
+            ""
         )
