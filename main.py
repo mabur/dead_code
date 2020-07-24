@@ -4,10 +4,6 @@ import os
 import re
 from typing import List
 
-# Dead code
-# unused code
-# symbols
-
 
 file_extensions = ["hpp", "cpp"]
 
@@ -55,6 +51,7 @@ def strip_string(line: str) -> str:
 
 def strip_multi_line_commenst(lines: List[str]) -> List[str]:
     is_inside_comment = False
+    lines = [strip_comment(line)  for line in lines]
     for index, line in enumerate(lines):
         if "/*" in line:
             is_inside_comment = True
@@ -77,7 +74,7 @@ def main():
         with open(filepath, "r") as file:
             try:
                 lines = [
-                    strip_comment(strip_string(strip_line_comment(line)))
+                    strip_string(strip_line_comment(line))
                     for line in file.readlines()
                 ]
                 lines = strip_multi_line_commenst(lines)
