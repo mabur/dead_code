@@ -10,7 +10,7 @@ import re
 
 file_extensions = ["hpp", "cpp"]
 string_regex = re.compile(r'"[^"]*"')
-function_regex = re.compile(r"[a-zA-Z0-9]+\(")
+function_regex = re.compile(r"\w+\(")
 line_comment_regex = re.compile(r"//.*")
 
 class SymbolLocation:
