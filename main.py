@@ -11,6 +11,7 @@ import re
 file_extensions = ["hpp", "cpp"]
 string_regex = re.compile(r'"[^"]*"')
 function_regex = re.compile(r"[a-zA-Z0-9]+\(")
+line_comment_regex = re.compile(r"//.*")
 
 class SymbolLocation:
     def __init__(self):
@@ -28,10 +29,7 @@ def walk_files(dir_paths):
 
 
 def strip_line_comment(line: str) -> str:
-    comment_index = line.find("//")
-    if comment_index == -1:
-        return line
-    return line[:comment_index]
+    return line_comment_regex.sub("", line)
 
 
 def strip_string(line: str) -> str:
