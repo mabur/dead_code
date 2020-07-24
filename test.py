@@ -10,6 +10,7 @@ from main import (
     strip_multi_line_string_start,
     strip_multi_line_string_end,
     strip_include,
+    strip_define_macro,
 )
 
 
@@ -65,5 +66,12 @@ class Test(TestCase):
     def test_strip_include(self):
         self.assertEqual(
             strip_include('#include <iostream>'),
+            ""
+        )
+
+
+    def test_strip_define_macro(self):
+        self.assertEqual(
+            strip_define_macro('DEFINE_string(print, "", "Print an urn");'),
             ""
         )

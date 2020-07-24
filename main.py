@@ -10,6 +10,7 @@ file_extensions = ["hpp", "cpp"]
 string_regex = re.compile(r'"[^"]*"')
 function_regex = re.compile(r"\w+\(")
 include_regex = re.compile(r"#include[\w\W]+")
+define_macro_regex = re.compile(r"DEFINE_[\w\W]+")
 single_line_comment_regex = re.compile(r"//.*")
 
 multi_line_comment_regex = re.compile(r"/\*[^(\*/)]*\*/")
@@ -38,6 +39,10 @@ def walk_files(dir_paths):
 
 def strip_include(line: str) -> str:
     return include_regex.sub("", line)
+
+
+def strip_define_macro(line: str) -> str:
+    return define_macro_regex.sub("", line)
 
 
 def strip_line_comment(line: str) -> str:
@@ -110,7 +115,7 @@ def main():
         with open(filepath, "r") as file:
             try:
                 lines = [
-                    strip_string(strip_line_comment(strip_include(line)))
+                    strip_string(strip_line_comment(strip_define_macro(strip_include(line))))
                     for line in file.readlines()
                 ]
                 lines = strip_multi_line_commenst(lines)
