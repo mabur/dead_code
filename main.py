@@ -9,9 +9,8 @@ import re
 
 
 file_extensions = ["hpp", "cpp"]
-r = r"[a-zA-Z0-9]+\("
 string_regex = re.compile(r'"[^"]*"')
-
+function_regex = re.compile(r"[a-zA-Z0-9]+\(")
 
 class SymbolLocation:
     def __init__(self):
@@ -43,7 +42,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dirs", nargs='+')
     args = parser.parse_args()
-    function_regex = re.compile(r)
+
     symbol_table = defaultdict(SymbolLocation)
     for filepath in walk_files(args.dirs):
         with open(filepath, "r") as file:
