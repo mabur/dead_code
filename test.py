@@ -71,10 +71,16 @@ class Test(TestCase):
             "print(); ",
         )
 
-    def test_strip_multi_line_comment_end(self):
+    def test_strip_multi_line_comment_end1(self):
         self.assertEqual(
             strip_comment_end("commetn */ print();"),
             " print();",
+        )
+
+    def test_strip_multi_line_comment_end2(self):
+        self.assertEqual(
+            strip_comment_end(" and one with a sleeping writer lock for waiting out slow reads (e.g. file system access). */"),
+            ""
         )
 
     def test_strip_multi_line_string(self):

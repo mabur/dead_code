@@ -58,10 +58,14 @@ def strip_comment(line: str) -> str:
 
 
 def strip_comment_start(line: str) -> str:
+    i = line.find('/*')
+    return line[:i]
     return multi_line_comment_regex_start.sub("", line)
 
 
 def strip_comment_end(line: str) -> str:
+    i = line.find('*/')
+    return line[i + 2:]
     return multi_line_comment_regex_end.sub("", line)
 
 
@@ -70,10 +74,14 @@ def strip_multi_line_string(line: str) -> str:
 
 
 def strip_multi_line_string_start(line: str) -> str:
+    i = line.find('R"(')
+    return line[:i]
     return multi_line_string_regex_start.sub("", line)
 
 
 def strip_multi_line_string_end(line: str) -> str:
+    i = line.find(')"')
+    return line[i+2:]
     return multi_line_string_regex_end.sub("", line)
 
 
