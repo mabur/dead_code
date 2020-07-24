@@ -27,10 +27,16 @@ class Test(TestCase):
             "            , kDeveloperCredentials.c_str());",
         )
 
-    def test_strip_single_line_comment(self):
+    def test_strip_single_line_comment1(self):
         self.assertEqual(
             strip_line_comment("int x = 5; // variable"),
             "int x = 5; ",
+        )
+
+    def test_strip_single_line_comment2(self):
+        self.assertEqual(
+            strip_line_comment("    int   passes               =  3; // How many times should we refine?"),
+            "    int   passes               =  3; ",
         )
 
     def test_strip_multi_line_comment(self):
