@@ -2,6 +2,7 @@ import argparse
 from collections import defaultdict
 import os
 import re
+from typing import List
 
 # Dead code
 # unused code
@@ -37,14 +38,33 @@ def strip_line_comment(line: str) -> str:
 
 
 def strip_comment(line: str) -> str:
-    line = multi_line_comment_regex.sub("", line)
-    line = multi_line_comment_regex_start.sub("", line)
-    line = multi_line_comment_regex_end.sub("", line)
-    return line
+    return multi_line_comment_regex.sub("", line)
+
+
+def strip_comment_start(line: str) -> str:
+    return multi_line_comment_regex_start.sub("", line)
+
+
+def strip_comment_end(line: str) -> str:
+    return multi_line_comment_regex_end.sub("", line)
 
 
 def strip_string(line: str) -> str:
     return string_regex.sub("", line)
+
+
+def strip_multi_line_commenst(lines: List[str]) -> List[str]:
+    is_inside_comment = False
+    for index, line in enumerate(lines):
+        if "/*" in line:
+            is_inside_comment = True
+            lines[index] = strip_comment_start(line)
+        if "*/" in line:
+            is_inside_comment = True
+            lines[index] = strip_comment_end(line)
+        if is_inside_comment:
+            lines[index] = ""
+    return lines
 
 
 def main():
@@ -60,6 +80,7 @@ def main():
                     strip_comment(strip_string(strip_line_comment(line)))
                     for line in file.readlines()
                 ]
+                lines = strip_multi_line_commenst(lines)
                 for line_number, line in enumerate(lines):
                     matches = function_regex.findall(line)
                     for match in matches:

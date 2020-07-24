@@ -1,6 +1,12 @@
 from unittest import TestCase
 
-from main import (strip_line_comment, strip_string, strip_comment)
+from main import (
+    strip_line_comment,
+    strip_string,
+    strip_comment,
+    strip_comment_start,
+    strip_comment_end,
+)
 
 
 class Test(TestCase):
@@ -18,13 +24,13 @@ class Test(TestCase):
 
     def test_strip_multi_line_comment_start(self):
         self.assertEqual(
-            strip_comment("print(); /* Comment"),
+            strip_comment_start("print(); /* Comment"),
             "print(); ",
         )
 
     def test_strip_multi_line_comment_end(self):
         self.assertEqual(
-            strip_comment("commetn */ print();"),
+            strip_comment_end("commetn */ print();"),
             " print();",
         )
 
