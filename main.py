@@ -12,10 +12,10 @@ file_extensions = ["hpp", "cpp"]
 
 string_regex = re.compile(r'"[^"]*"')
 function_regex = re.compile(r"\w+\(")
-line_comment_regex = re.compile(r"//.*")
-comment_regex = re.compile(r"/\*[^\*/]*\*/")
-comment_regex_start = re.compile(r"/\*[^\*/]*")
-comment_regex_end = re.compile(r"[^\*/]*\*/")
+single_line_comment_regex = re.compile(r"//.*")
+multi_line_comment_regex = re.compile(r"/\*[^\*/]*\*/")
+multi_line_comment_regex_start = re.compile(r"/\*[^\*/]*")
+multi_line_comment_regex_end = re.compile(r"[^\*/]*\*/")
 
 class SymbolLocation:
     def __init__(self):
@@ -33,13 +33,13 @@ def walk_files(dir_paths):
 
 
 def strip_line_comment(line: str) -> str:
-    return line_comment_regex.sub("", line)
+    return single_line_comment_regex.sub("", line)
 
 
 def strip_comment(line: str) -> str:
-    line = comment_regex.sub("", line)
-    line = comment_regex_start.sub("", line)
-    line = comment_regex_end.sub("", line)
+    line = multi_line_comment_regex.sub("", line)
+    line = multi_line_comment_regex_start.sub("", line)
+    line = multi_line_comment_regex_end.sub("", line)
     return line
 
 
