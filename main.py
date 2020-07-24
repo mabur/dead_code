@@ -8,7 +8,7 @@ from typing import List
 file_extensions = ["hpp", "cpp"]
 
 string_regex = re.compile(r'"[^"]*"')
-function_regex = re.compile(r"\w+\(")
+function_regex = re.compile(r"[a-zA-Z_]\w+\(")
 include_regex = re.compile(r"#include[\w\W]+")
 define_macro_regex = re.compile(r"DEFINE_[\w\W]+")
 single_line_comment_regex = re.compile(r"//.*")
