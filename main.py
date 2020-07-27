@@ -25,6 +25,7 @@ def walk_files(dir_paths):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dirs", nargs='+')
+    parser.add_argument("--ignore_prefixes", nargs='+', default=[])
     args = parser.parse_args()
 
     symbol_table = defaultdict(SymbolLocation)
@@ -34,8 +35,11 @@ def main():
                 lines = file.readlines()
                 lines_clean = strip_lines(lines)
                 for line_number, line in enumerate(lines_clean):
+
                     symbols = find_symbols(line)
                     for symbol in symbols:
+                        if any(symbol.startswith(p) for p in args.ignore_prefixes):
+                            continue
                         symbol_table[symbol].occurances += 1
                         symbol_table[symbol].line_number = line_number
                         symbol_table[symbol].file_path = filepath
