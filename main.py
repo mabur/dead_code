@@ -124,6 +124,13 @@ def strip_line(line: str) -> str:
     return strip_string(strip_quotation(strip_line_comment(strip_define_macro(strip_include(line)))))
 
 
+def strip_lines(lines: List[str]) -> List[str]:
+    lines = [strip_line(line) for line in lines]
+    lines = strip_multi_line_commenst(lines)
+    lines = strip_multi_line_strings(lines)
+    return lines
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dirs", nargs='+')
@@ -133,9 +140,7 @@ def main():
     for filepath in walk_files(args.dirs):
         with open(filepath, "r") as file:
             try:
-                lines = [strip_line(line) for line in file.readlines()]
-                lines = strip_multi_line_commenst(lines)
-                lines = strip_multi_line_strings(lines)
+                lines = strip_lines(file.readlines())
                 for line_number, line in enumerate(lines):
                     matches = function_regex.findall(line)
                     for symbol in matches:
