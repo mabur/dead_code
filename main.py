@@ -41,6 +41,7 @@ def walk_files(dir_paths):
 def strip_quotation(line: str) -> str:
     return quotation_regex.sub("", line)
 
+
 def strip_include(line: str) -> str:
     return include_regex.sub("", line)
 
@@ -103,6 +104,7 @@ def strip_multi_line_commenst(lines: List[str]) -> List[str]:
             lines[index] = ""
     return lines
 
+
 def strip_multi_line_strings(lines: List[str]) -> List[str]:
     is_inside = False
     lines = [strip_multi_line_string(line)  for line in lines]
@@ -117,8 +119,10 @@ def strip_multi_line_strings(lines: List[str]) -> List[str]:
             lines[index] = ""
     return lines
 
+
 def strip_line(line: str) -> str:
     return strip_string(strip_quotation(strip_line_comment(strip_define_macro(strip_include(line)))))
+
 
 def main():
     parser = argparse.ArgumentParser()
