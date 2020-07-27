@@ -50,7 +50,8 @@ def main():
     for k, v in unused_functions.items():
             print("{:<33} Line {:>4} in {}".format(k, v.line_number, v.file_path))
     print()
-    print("Found {} possibly unused functions".format(len(unused_functions)))
+    print("Found {} symbols that only occurred once.".format(len(unused_functions)))
+    print("They are either defined externally or unused.")
 
 
 if __name__ == "__main__":
