@@ -2,7 +2,7 @@ import argparse
 from collections import defaultdict
 import os
 
-from strip import function_regex, strip_lines
+from strip import strip_lines, find_symbols
 
 file_extensions = ["hpp", "cpp"]
 
@@ -21,6 +21,7 @@ def walk_files(dir_paths):
                 if file_name.split(".")[-1] in file_extensions:
                     yield os.path.join(root, file_name)
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dirs", nargs='+')
@@ -30,10 +31,11 @@ def main():
     for filepath in walk_files(args.dirs):
         with open(filepath, "r") as file:
             try:
-                lines = strip_lines(file.readlines())
-                for line_number, line in enumerate(lines):
-                    matches = function_regex.findall(line)
-                    for symbol in matches:
+                lines = file.readlines()
+                lines_clean = strip_lines(lines)
+                for line_number, line in enumerate(lines_clean):
+                    symbols = find_symbols(line)
+                    for symbol in symbols:
                         symbol_table[symbol].occurances += 1
                         symbol_table[symbol].line_number = line_number
                         symbol_table[symbol].file_path = filepath

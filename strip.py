@@ -106,3 +106,7 @@ def strip_lines(lines: List[str]) -> List[str]:
     lines = strip_multi_line_commenst(lines)
     lines = strip_multi_line_strings(lines)
     return lines
+
+
+def find_symbols(line: str) -> List[str]:
+    return function_regex.findall(line)
