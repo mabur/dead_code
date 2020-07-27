@@ -1,18 +1,9 @@
 from unittest import TestCase
 
-from main import (
-    strip_line_comment,
-    strip_string,
-    strip_comment,
-    strip_comment_start,
-    strip_comment_end,
-    strip_multi_line_string,
-    strip_multi_line_string_start,
-    strip_multi_line_string_end,
-    strip_include,
-    strip_define_macro,
-    strip_quotation,
-)
+from strip import strip_quotation, strip_include, strip_define_macro, \
+    strip_line_comment, strip_comment, strip_comment_start, strip_comment_end, \
+    strip_multi_line_string, strip_multi_line_string_start, \
+    strip_multi_line_string_end, strip_string
 
 
 class Test(TestCase):
